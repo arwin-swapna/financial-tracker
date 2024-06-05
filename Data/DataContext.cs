@@ -1,4 +1,5 @@
 using api.Models;
+using Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
@@ -9,6 +10,19 @@ namespace api.Data
         {
 
         }
-        public DbSet<Tokens> Tokens { get; set; }
+        public DbSet<Token> Tokens { get; set; }
+
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Institution> Institutions { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Account>()
+                .HasOne(a => a.Institution)
+                .WithMany(i => i.Accounts)
+                .HasForeignKey(a => a.InstitutionId);
+        }
     }
 }

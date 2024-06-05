@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
-    public class Tokens
+    public class Token
     {
         public int Id { get; set; }
         public string AccessToken { get; set; }

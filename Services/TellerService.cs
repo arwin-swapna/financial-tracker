@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
+using Api.Models;
+using Newtonsoft.Json;
 
 namespace api.Services
 {
@@ -11,6 +9,7 @@ namespace api.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
+        private readonly string _tellerApiUrl;
         public TellerService(IConfiguration config)
         {
             _config = config;
@@ -24,13 +23,14 @@ namespace api.Services
             handler.ClientCertificates.Add(cert);
 
             _httpClient = new HttpClient(handler);
+            _tellerApiUrl = _config["TellerApiUrl"];
         }
 
-        public async Task<string> TestRequestAsync()
+        public async Task<string> GetAsync(string endpoint, string token)
         {
-            var byteArray = Encoding.ASCII.GetBytes("test_token_lygsiaethecgu:");
+            var byteArray = Encoding.ASCII.GetBytes($"{token}:");
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            var response = await _httpClient.GetAsync("https://api.teller.io/accounts");
+            var response = await _httpClient.GetAsync(_tellerApiUrl + endpoint);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -42,6 +42,11 @@ namespace api.Services
             }
         }
 
-        
+        public async Task<List<Account>> GetAccountsAsync()
+        {
+            var test = await GetAsync("accounts", "test_token_lygsiaethecgu");
+            var accounts = JsonConvert.DeserializeObject<List<Account>>(test);
+            return accounts;
+        }
     }
 }

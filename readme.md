@@ -1,6 +1,6 @@
 # Finance Tracker Application
 
-This is a finance tracker application built with .NET 6.0 and Entity Framework Core. It uses MySQL as the database.
+This is a finance tracker application built with .NET 8.0 and Entity Framework Core. It uses MySQL as the database.
 
 ## Features
 

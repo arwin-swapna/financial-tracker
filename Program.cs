@@ -1,5 +1,6 @@
 using api.Data;
 using api.Middleware;
+using api.RequestHelpers;
 using api.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<TellerService>();
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Services;
+using Api.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -12,17 +14,22 @@ namespace api.Controllers
     {
         private readonly DataContext _context;
         private readonly TellerService _tellerService;
-        public AccountController(DataContext context, TellerService tellerService)
+        private readonly IMapper _mapper;
+        public AccountController(DataContext context, TellerService tellerService, IMapper mapper)
         {
             _context = context;
             _tellerService = tellerService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAccounts()
         {
-            var accounts = await _tellerService.GetAccountsAsync();
+            var accountDtos = await _tellerService.GetAccountsAsync();
+            
+            var accounts = _mapper.Map<List<Account>>(accountDtos);
             _context.Accounts.AddRange(accounts);
+
             var result = await _context.SaveChangesAsync() > 0;
 
             if (!result)

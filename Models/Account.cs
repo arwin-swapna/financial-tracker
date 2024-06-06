@@ -10,10 +10,7 @@ namespace Api.Models
         [Key]
         public string Id { get; set; }
         public string EnrollmentId { get; set; }
-        // [JsonIgnore]
-        // public Links Links { get; set; }
-        public string InstitutionId { get; set; }
-        public Institution Institution { get; set; }
+        public string InstitutionName { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }
         public string Subtype { get; set; }
@@ -22,14 +19,14 @@ namespace Api.Models
         public string Status { get; set; }
     }
 
-    [JsonObject(NamingStrategyType = typeof(DefaultNamingStrategy))]
-    public class Institution
-    {
-        [Key]
-        public string Id { get; set; }
-        public string Name { get; set; }
+    // [JsonObject(NamingStrategyType = typeof(DefaultNamingStrategy))]
+    // public class Institution
+    // {
+    //     [Key]
+    //     public string Id { get; set; }
+    //     public string Name { get; set; }
 
-    }
+    // }
 
     // [JsonObject(NamingStrategyType = typeof(DefaultNamingStrategy))]
     // public class Links

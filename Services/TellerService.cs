@@ -1,5 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using api.DTOs;
 using Api.Models;
 using Newtonsoft.Json;
 
@@ -42,10 +43,10 @@ namespace api.Services
             }
         }
 
-        public async Task<List<Account>> GetAccountsAsync()
+        public async Task<List<AccountDto>> GetAccountsAsync()
         {
             var test = await GetAsync("accounts", "test_token_lygsiaethecgu");
-            var accounts = JsonConvert.DeserializeObject<List<Account>>(test);
+            var accounts = JsonConvert.DeserializeObject<List<AccountDto>>(test);
             return accounts;
         }
     }

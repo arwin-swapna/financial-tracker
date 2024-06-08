@@ -1,7 +1,9 @@
 using api.Data;
 using api.Middleware;
+using api.Models;
 using api.RequestHelpers;
 using api.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,15 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 // Add services to the container.
+
+builder.Services.AddIdentityCore<User>(opt => {
+        opt.User.RequireUniqueEmail = true;
+    })
+    .AddRoles<Role>()
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddDataProtection(); 
 
 builder.Services.AddScoped<TellerService>();
 

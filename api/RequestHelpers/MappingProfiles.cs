@@ -1,5 +1,5 @@
 using api.DTOs;
-using Api.Models;
+using api.Models;
 using AutoMapper;
 
 namespace api.RequestHelpers

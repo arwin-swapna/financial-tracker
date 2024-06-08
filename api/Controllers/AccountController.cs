@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Data;
 using api.Services;
-using Api.Models;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -14,20 +8,17 @@ namespace api.Controllers
     {
         private readonly DataContext _context;
         private readonly TellerService _tellerService;
-        private readonly IMapper _mapper;
-        public AccountController(DataContext context, TellerService tellerService, IMapper mapper)
+        public AccountController(DataContext context, TellerService tellerService)
         {
             _context = context;
             _tellerService = tellerService;
-            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAccounts()
         {
-            var accountDtos = await _tellerService.GetAccountsAsync();
+            var accounts = await _tellerService.GetAccountsAsync();
             
-            var accounts = _mapper.Map<List<Account>>(accountDtos);
             _context.Accounts.AddRange(accounts);
 
             var result = await _context.SaveChangesAsync() > 0;
@@ -39,5 +30,21 @@ namespace api.Controllers
             
             return Ok(accounts);
         }
+
+
+        // implementation of this will be done after implementing the users
+        // [HttpGet("tokenGen")]
+        // public async Task<IActionResult> GenerateToken()
+        // {
+        //     var token = new Token
+        //     {
+        //         AccessToken = "test_token_lygsiaethecgu"
+        //     };
+
+        //     _context.Tokens.Add(token);
+        //     await _context.SaveChangesAsync();
+
+        //     return Ok();
+        // }
     }
 }

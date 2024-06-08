@@ -1,7 +1,8 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using api.DTOs;
-using Api.Models;
+using api.Models;
+using AutoMapper;
 using Newtonsoft.Json;
 
 namespace api.Services
@@ -10,8 +11,9 @@ namespace api.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
         private readonly string _tellerApiUrl;
-        public TellerService(IConfiguration config)
+        public TellerService(IConfiguration config, IMapper mapper)
         {
             _config = config;
             var certPath = _config["CertPath"];
@@ -25,6 +27,7 @@ namespace api.Services
 
             _httpClient = new HttpClient(handler);
             _tellerApiUrl = _config["TellerApiUrl"];
+            _mapper = mapper;
         }
 
         public async Task<string> GetAsync(string endpoint, string token)
@@ -43,11 +46,19 @@ namespace api.Services
             }
         }
 
-        public async Task<List<AccountDto>> GetAccountsAsync()
+        public async Task<List<Account>> GetAccountsAsync()
         {
-            var test = await GetAsync("accounts", "test_token_lygsiaethecgu");
-            var accounts = JsonConvert.DeserializeObject<List<AccountDto>>(test);
+            var response = await GetAsync("accounts", "test_token_lygsiaethecgu");
+            var accountDtos = JsonConvert.DeserializeObject<List<AccountDto>>(response);
+            var accounts = _mapper.Map<List<Account>>(accountDtos);
             return accounts;
+        }
+
+        public async Task<AccountBalanceUpdateDto> GetAccountBalanceAsync(string accountId)
+        {
+            var response = await GetAsync($"accounts/{accountId}/balances", "test_token_lygsiaethecgu");
+            var accountBalanceUpdateDto = JsonConvert.DeserializeObject<AccountBalanceUpdateDto>(response);
+            return accountBalanceUpdateDto;
         }
     }
 }

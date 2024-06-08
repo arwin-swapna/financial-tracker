@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 
 namespace api.Models
 {
-    public class Token
+    public class AccountGroup
     {
         public int Id { get; set; }
         public string AccessToken { get; set; }
+        public virtual List<Account> Accounts { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

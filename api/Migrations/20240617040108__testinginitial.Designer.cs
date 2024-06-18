@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
 #nullable disable
 
-namespace api.Data.Migrations
+namespace api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240617040108__testinginitial")]
+    partial class _testinginitial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,7 +133,7 @@ namespace api.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("AccountGroupId")
+                    b.Property<int?>("AccountGroupId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Available")
@@ -181,7 +184,7 @@ namespace api.Data.Migrations
                     b.Property<string>("AccessToken")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -356,9 +359,7 @@ namespace api.Data.Migrations
                 {
                     b.HasOne("api.Models.AccountGroup", "AccountGroup")
                         .WithMany("Accounts")
-                        .HasForeignKey("AccountGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccountGroupId");
 
                     b.Navigation("AccountGroup");
                 });
@@ -367,9 +368,7 @@ namespace api.Data.Migrations
                 {
                     b.HasOne("api.Models.User", "User")
                         .WithMany("AccountGroups")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    public class TransactionController : BaseApiController
-    {
-        
-    }
+  public class TransactionController : BaseApiController
+  {
+
+  }
 }

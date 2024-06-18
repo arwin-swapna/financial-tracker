@@ -19,7 +19,6 @@ namespace api.Models
         public string Status { get; set; }
         public decimal Balance { get; set; } = 0.00m;
         public decimal Available { get; set; } = 0.00m;
-        public int AccountGroupId { get; set; }
         public virtual AccountGroup AccountGroup { get; set; }
     }
 }

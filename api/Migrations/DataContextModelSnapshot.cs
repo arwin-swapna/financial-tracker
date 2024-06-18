@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
 #nullable disable
 
-namespace api.Data.Migrations
+namespace api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240607024058__Init2")]
-    partial class _Init2
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,6 +130,9 @@ namespace api.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<int?>("AccountGroupId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Available")
                         .HasColumnType("decimal(65,30)");
 
@@ -165,6 +165,8 @@ namespace api.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountGroupId");
+
                     b.ToTable("Accounts");
                 });
 
@@ -179,7 +181,7 @@ namespace api.Data.Migrations
                     b.Property<string>("AccessToken")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -350,15 +352,27 @@ namespace api.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("api.Models.Account", b =>
+                {
+                    b.HasOne("api.Models.AccountGroup", "AccountGroup")
+                        .WithMany("Accounts")
+                        .HasForeignKey("AccountGroupId");
+
+                    b.Navigation("AccountGroup");
+                });
+
             modelBuilder.Entity("api.Models.AccountGroup", b =>
                 {
                     b.HasOne("api.Models.User", "User")
                         .WithMany("AccountGroups")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("api.Models.AccountGroup", b =>
+                {
+                    b.Navigation("Accounts");
                 });
 
             modelBuilder.Entity("api.Models.User", b =>
